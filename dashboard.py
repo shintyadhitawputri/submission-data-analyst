@@ -63,7 +63,7 @@ def create_rfm_df(df):
     return rfm_df, hour_segment_df
 
 #Load cleaned data
-all_df = pd.read_csv("all_data.csv")
+all_df = pd.read_csv("https://github.com/shintyadhitawputri/submission-data-analyst/blob/main/all_data.csv")
 
 
 # Create Streamlit Dashboard
