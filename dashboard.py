@@ -73,7 +73,7 @@ st.title('Bike Sharing Dashboard🚲')
 with st.sidebar:
     st.header('Bike Sharing Company🚲')
     st.image("bike.png")
-    filter_option = st.sidebar.selectbox('Pilih Kategori:', ['Weather', 'Season', 'Hour', 'RFM'])
+    filter_option = st.sidebar.selectbox('Pilih Kategori:', ['Weather', 'Season', 'RFM'])
 
 # Display filtered chart
 if filter_option == 'Weather':
@@ -126,25 +126,6 @@ elif filter_option == 'Season':
     ax.tick_params(axis='y', labelsize=12)
     st.pyplot(fig)
     st.write('Berdasarkan grafik, musim "Fall" memiliki jumlah pengguna sepeda casual lebih banyak dengan total 226,091. Lalu diikuti musim "Summer" dengan total 203,522 pengguna. Musim "Spring" memiliki jumlah pengguna paling sedikit yaitu 60,622.')
-
-elif filter_option == 'Hour':
-    st.subheader('Distribution Of Bicycle Users Between Peak Hours and Off-peak Hours')
-    hour_df = create_hour_df(all_df)
-    st.write(hour_df)
-
-    def func(pct, allvalues):
-        absolute = int(round(pct / 100. * sum(allvalues)))
-        return f'{absolute:,} ({pct:.1f}%)'
-    fig, ax = plt.subplots(figsize=(4, 4))
-    ax.pie(
-        hour_df['countrent'],
-        labels=hour_df['hourcategory'],
-        autopct=lambda pct: func(pct, hour_df['countrent']),
-        startangle=140,
-        colors=['#a4bdd5','#7299be'])
-    ax.axis('equal')
-    st.pyplot(fig)
-    st.write('Berdasarkan grafik, waktu "Peak Hour" memiliki jumlah pengguna lebih banyak dengan persentase 50.9% (1,675,779 pengguna) dibandingkan "Off-peak Hour" yang memiliki persentase 49.1% (1,616,900 pengguna).')
 
 elif filter_option == 'RFM':
     rfm_df, hour_segment_df = create_rfm_df(all_df)
@@ -211,5 +192,23 @@ elif filter_option == 'RFM':
     st.pyplot(fig)
     st.write('Berdasarkan grafik "Total of Each Segment", terdapat 7 jam yang dikategorikan sebagai "Lost Hours", "Low Value Hours", dan "Medium Value Hours", menunjukkan bahwa sebagian besar jam memiliki nilai kontribusi rendah hingga sedang. Hanya ada 2 jam yang termasuk "High Value Hours" dan 1 jam yang masuk kategori "Top Hours", yang menunjukkan nilai kontribusi tertinggi. Hal ini berarti terdapat banyak jam yang kurang peminat dalam menggunakan sepeda sharing, sementara hanya sedikit jam yang sangat produktif.')
 
+# Grafik HOUR
+st.subheader('Distribution Of Bicycle Users Between Peak Hours and Off-peak Hours')
+hour_df = create_hour_df(all_df)
+st.write(hour_df)
+
+def func(pct, allvalues):
+    absolute = int(round(pct / 100. * sum(allvalues)))
+    return f'{absolute:,} ({pct:.1f}%)'
+fig, ax = plt.subplots(figsize=(4, 4))
+ax.pie(
+    hour_df['countrent'],
+    labels=hour_df['hourcategory'],
+    autopct=lambda pct: func(pct, hour_df['countrent']),
+    startangle=140,
+    colors=['#a4bdd5','#7299be'])
+ax.axis('equal')
+st.pyplot(fig)
+st.write('Berdasarkan grafik, waktu "Peak Hour" memiliki jumlah pengguna lebih banyak dengan persentase 50.9% (1,675,779 pengguna) dibandingkan "Off-peak Hour" yang memiliki persentase 49.1% (1,616,900 pengguna).')
 
 st.caption('Copyright © Shintyadhita 2024')
